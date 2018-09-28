@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -6,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import AlbumsList from './AlbumsList'
 import Loading from './Loading'
+import { fetchAlbums } from '../actions/albums';
 
 const styles = theme => ({
   heroUnit: {
@@ -21,19 +23,20 @@ const styles = theme => ({
   },
 });
 
-class AlbumsListContainer extends React.PureComponent {
-  state = {}
+const mapStateToProps = ({ albums }) => ({ albums })
+const mapDispatchToProps = { fetchAlbums }
+
+const AlbumsListContainer = connect(mapStateToProps, mapDispatchToProps)(
+  class extends React.PureComponent {
 
   componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/albums')
-      .then(res => res.json())
-      .then(response => this.setState({ albums: response }))
+    this.props.fetchAlbums()
   }
 
   render() {
-    if (!this.state.albums) return <Loading />
+    const { classes, albums } = this.props;
 
-    const { classes } = this.props;
+    if (!albums) return <Loading />
 
     return (
       <React.Fragment>
@@ -62,13 +65,11 @@ class AlbumsListContainer extends React.PureComponent {
             </div>
           </div>
         </div>
-        <AlbumsList albums={this.state.albums} />
+        <AlbumsList albums={albums} />
       </React.Fragment>
     );
   }
-}
-
-
+})
 
 AlbumsListContainer.propTypes = {
   classes: PropTypes.object.isRequired,
