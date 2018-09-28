@@ -45,7 +45,7 @@ const AlbumsList = (props) => {
       <div className={classNames(classes.layout, classes.albumGrid)}>
         <Grid container spacing={40}>
           {albums.map(album => (
-            <Grid item key={album} sm={6} md={4} lg={3}>
+            <Grid item key={album.id} sm={6} md={4} lg={3}>
               <Card className={classes.album}>
                 <CardMedia
                   className={classes.albumMedia}

@@ -1,6 +1,5 @@
-import * as React from 'react'
+import React from 'react'
 import PropTypes from 'prop-types';
-import * as request from 'superagent'
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -26,8 +25,9 @@ class AlbumsListContainer extends React.PureComponent {
   state = {}
 
   componentDidMount() {
-    request('https://jsonplaceholder.typicode.com/albums')
-      .then(response => this.setState({ albums: response.body }))
+    fetch('https://jsonplaceholder.typicode.com/albums')
+      .then(res => res.json())
+      .then(response => this.setState({ albums: response }))
   }
 
   render() {
